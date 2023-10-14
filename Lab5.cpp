@@ -1,4 +1,5 @@
-﻿#include <iostream>
+﻿
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -59,9 +60,7 @@ int main() {
                 for (const string& groupLine : groupLines) {
                     outputFile << groupLine << endl;
                 }
-                if (groupLines.size() != 1) {
                     outputFile << "kolichestvo povtorenii: " << groupLines.size() << "\n\n";
-                }
             }
             groupLines.clear();
             groupLines.push_back(LineNow);
