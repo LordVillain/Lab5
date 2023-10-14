@@ -45,16 +45,15 @@ int main() {
     string preLine = "";
     int lineCount = 0;
     vector<string> groupLines;
-    // Перебор строк во входном файле
+
     while (getline(inputFileForReading, LineNow)) {
         lineCount++;
 
-        // Если текущая строка совпадает с предыдущей, добавляем ее в группу
         if (LineNow == preLine) {
             groupLines.push_back(LineNow);
         }
         else {
-            // Новая группа строк начинается, выводим информацию о предыдущей группе (если есть)
+ 
             if (!groupLines.empty()) {
                 outputFile << "gruppa strok, nachinaya s nomera " << (lineCount - groupLines.size()) << ":\n";
                 for (const string& groupLine : groupLines) {
@@ -70,7 +69,6 @@ int main() {
         preLine = LineNow;
     }
 
-    // Проверка, возможно последняя группа строк не была выведена
     if (!groupLines.empty()) {
         outputFile << "gruppa strok, nachinaya s nomera " << (lineCount - groupLines.size()) << ":\n";
         for (const string& groupLine : groupLines) {
