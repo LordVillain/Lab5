@@ -82,9 +82,6 @@ int main() {
     if (c == 'y'){
         while (!outputFile2.eof()) {
             getline(outputFile2, line);
-            /*if (line.empty()) {
-                break;
-            }*/
             cout << line << "\n";
         }
     }
