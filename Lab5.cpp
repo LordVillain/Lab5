@@ -1,88 +1,93 @@
-﻿
+
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
 
 using namespace std;
 
 int main() {
-    ofstream inputFile;
-    inputFile.open("input.txt");
+    ifstream inputFile;
+    ofstream outputFile;
+
+    char c;
+    cout << "otrkryt input?(y/n)\n";
+    cin >> c;
+    if (c == 'y')
+        inputFile.open("input.txt");
+
+    cout << "otrkryt output?(y/n)\n";
+    cin >> c;
+    if (c == 'y')
+        outputFile.open("output.txt");
 
     if (!inputFile.is_open()) {
         cout << "oshibka pri otkritii inhodnogo faila" << endl;
-        return 1;
+        return 0;
     }
-    cout << "vvedite stroki (dla zavershenia vvedite pystyu stroky) :\n ";
-    string line;
 
-    while (true) {
-        getline(cin, line);
-        if (line.empty()) {
-            break;
-        }
-        inputFile << line << endl;
-    }
-    inputFile.close();
-
-
-
-    ofstream outputFile("output.txt");
     if (!outputFile.is_open()) {
         cout << "oshibka pri open outhodnogo faila" << endl;
-        return 1;
+        return 0;
     }
 
-    ifstream inputFileForReading("input.txt");
-    if (!inputFileForReading.is_open()) {
-        cout << "oshibka pri open inhodnogo faila" << endl;
-        return 1;
-    }
+    string line;
 
-
-
-    string LineNow;
-    string preLine = "";
-    int lineCount = 0;
-    vector<string> groupLines;
-
-    while (getline(inputFileForReading, LineNow)) {
-        lineCount++;
-
-        if (LineNow == preLine) {
-            groupLines.push_back(LineNow);
+    int startline = 0;
+    int counter = 0;
+    string text = "#";
+    int i = 0;
+    while (true) {
+        getline(inputFile, line);
+        if (line.empty()) {
+            //if (counter > 1)
+            outputFile << "nomer stroki:\n" << startline << "\nkol-vo:\n" << counter << "\ntext:\n" << text << "\n\n\n";
+            break;
+        }
+        if (line == text || text == "#") {
+            counter++;
+            text = line;
         }
         else {
- 
-            if (!groupLines.empty()) {
-                outputFile << "gruppa strok, nachinaya s nomera " << (lineCount - groupLines.size()) << ":\n";
-                for (const string& groupLine : groupLines) {
-                    outputFile << groupLine << endl;
-                }
-                    outputFile << "kolichestvo povtorenii: " << groupLines.size() << "\n\n";
+            //if (counter > 1)
+            outputFile << "nomer stroki:\n" << startline << "\nkol-vo:\n" << counter << "\ntext:\n" << text << "\n\n\n";
+            counter = 1;
+            startline = i;
+            text = line;
+        }
+        i++;
+    }
+
+    inputFile.close();
+    outputFile.close();
+
+    ifstream inputFile2;
+    ifstream outputFile2;
+    inputFile2.open("input.txt");
+    outputFile2.open("output.txt");
+
+    cout << "faily obrabotany.\nposmotret input?(y/n)";
+    cin >> c;
+    if (c == 'y'){
+        while (true) {
+            getline(inputFile2, line);
+            if (line.empty()) {
+                break;
             }
-            groupLines.clear();
-            groupLines.push_back(LineNow);
+            cout << line << "\n";
         }
-        preLine = LineNow;
     }
 
-    if (!groupLines.empty()) {
-        outputFile << "gruppa strok, nachinaya s nomera " << (lineCount - groupLines.size()) << ":\n";
-        for (const string& groupLine : groupLines) {
-            outputFile << groupLine << endl;
+    cout << "\nposmotret output?(y/n)";
+    cin >> c;
+    if (c == 'y'){
+        while (!outputFile2.eof()) {
+            getline(outputFile2, line);
+            /*if (line.empty()) {
+                break;
+            }*/
+            cout << line << "\n";
         }
-        outputFile << "kolichestvo povtorenii: " << groupLines.size() << "\n\n";
     }
-
-    inputFileForReading.close();  
-    outputFile.close();         
-
-    ifstream outputFileForReading("output.txt");
-    string str;
-    while (getline(outputFileForReading, str)) {
-        cout << str << endl;
-    }
-        outputFile.close();
-    }
+    inputFile2.close();
+    outputFile2.close();
+}
